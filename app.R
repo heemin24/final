@@ -1,47 +1,21 @@
 library(shiny)
 
-# Define UI for app that draws a histogram ----
 ui <- fluidPage(
-  
-  # App title ----
-  titlePanel("¿©Çà Shiny"),
-  # Sidebar layout with input and output definitions ----
-  sidebarLayout(
-    # Sidebar panel for inputs ----
-    sidebarPanel(
-      # Input: Slider for the number of bins ----
-      sliderInput(inputId = "bins",
-                  label = "Number of bins:",
-                  min = 1,
-                  max = 50,
-                  value = 30)
-    ),
-    # Main panel for displaying outputs ----
+    titlePanel("Travel Shiny App"),
+    checkboxGroupInput("Check Graph", label = h3("Check Graph That You Want To See"), 
+                       choices = list("2018~2019" = 1, "2019~2020" = 2, "2020~2021" = 3, "Seat" = 4, "Airplane" = 5, "Passenger" = 6, "Shipment"= 7),
+                       selected = 1),
     mainPanel(
-      # Output: Histogram ----
-      plotOutput(outputId = "distPlot")
-    )
-  )
+        img(src="travel1819", height=200, width =250)
+    ),
+    fluidRow(column(3, verbatimTextOutput("text_choice")))
 )
+    
 
-# Define server logic required to draw a histogram ----
-server <- function(input, output) {
-  
-  # Histogram of the Old Faithful Geyser Data ----
-  # with requested number of bins
-  # This expression that generates a histogram is wrapped in a call
-  # to renderPlot to indicate that:
-  #
-  # 1. It is "reactive" and therefore should be automatically
-  #    re-executed when inputs (input$bins) change
-  # 2. Its output type is a plot
-  output$distPlot <- renderPlot({
-    x    <- faithful$waiting
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    hist(x, breaks = bins, col = "#75AADB", border = "white",
-         xlab = "Waiting time to next eruption (in mins)",
-         main = "Histogram of waiting times")
-  })
-}
+server <- function(input, output){
+    output$text_choice <- renderPrint({
+        return(paste0("You have chosen the choice ",input$checkGroup1))})
+} 
 
+    
 shinyApp(ui = ui, server = server)
